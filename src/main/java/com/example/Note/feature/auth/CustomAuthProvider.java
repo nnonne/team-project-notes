@@ -1,6 +1,7 @@
 package com.example.Note.feature.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Objects;
 
@@ -20,7 +25,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 
 
     private final com.example.Note.feature.auth.CustomUserDetailsService userDetailsPasswordService;
-    private final PasswordEncoder passwordEncoder;
+ //   private final PasswordEncoder passwordEncoder;
 
     @Override // данні про юзера, із форми
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -37,7 +42,8 @@ public class CustomAuthProvider implements AuthenticationProvider {
 
     // тут перевіпяємо відповідність інфи з бази данних до відповідності того шо ввів користувач у браузері
     private Authentication checkPassword(UserDetails user, String rawPassword) {
-        if (passwordEncoder.matches(rawPassword, user.getPassword())) {
+        if (passwordEncoder().matches(rawPassword, user.getPassword())) {
+    //    if (passwordEncoder().encode(rawPassword).equals(user.getPassword())) {
             User innerUser = new User(
                     user.getUsername(),
                     user.getPassword(),
@@ -49,4 +55,9 @@ public class CustomAuthProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad credentials");
         }
     }
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
 }

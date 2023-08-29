@@ -1,5 +1,7 @@
 package com.example.Note.feature.auth;
 
+import com.example.Note.feature.user.User;
+import com.example.Note.feature.user.UserRepository;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -75,13 +78,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     private UserData getByIdOrNull(String name) {
-        String sql = "SELECT password, role FROM \"user\" WHERE name = :name";
-        return jdbcTemplate.queryForObject(
-                sql,
-                Map.of("name", name),
-                new UserDataMapper()
-        );
+     userRepository.searchUserByName(name);
+        User newUser = userRepository.searchUserByName(name);
+   return new UserData(newUser.getPassword(), newUser.getRole());
+
     }
+
+
+
+//    private UserData getByIdOrNull(String name) {
+//        String sql = "SELECT password, role FROM \"user\" WHERE name = :name";
+//        return jdbcTemplate.queryForObject(
+//                sql,
+//                Map.of("name", name),
+//                new UserDataMapper()
+//        );
+//    }
 
     private class UserDataMapper implements RowMapper<UserData> {
         @Override
@@ -95,7 +107,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Builder
     @Data
-    private static class UserData {
+    public static class UserData {
         private String password;
         private String role;
         /*
