@@ -3,6 +3,7 @@ package com.example.demo.auth.service;
 
 import com.example.demo.auth.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Service
-public class UserDetailsBean implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private Long id;
 
@@ -20,14 +21,16 @@ public class UserDetailsBean implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserDetailsBean(Long id, String username, String password) {
+    public UserDetailsImpl(@Value("${user.id}") Long id,
+                           @Value("${user.username}") String username,
+                           @Value("${user.password}") String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public static UserDetailsBean build(User user) {
-        UserDetailsBean userDetailsBean = new UserDetailsBean(
+    public static UserDetailsImpl build(User user) {
+        UserDetailsImpl userDetailsBean = new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword());
@@ -90,7 +93,7 @@ public class UserDetailsBean implements UserDetails {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        UserDetailsBean other = (UserDetailsBean) obj;
+        UserDetailsImpl other = (UserDetailsImpl) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
