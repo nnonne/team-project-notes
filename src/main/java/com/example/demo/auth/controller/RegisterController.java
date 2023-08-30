@@ -2,10 +2,8 @@ package com.example.demo.auth.controller;
 
 import com.example.demo.auth.entity.User;
 import com.example.demo.auth.repository.UserRepository;
-import com.example.demo.auth.service.UserDetailsImpl;
 import com.example.demo.auth.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,17 +29,16 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("validationErrors", bindingResult.getAllErrors());
+            return "register";
+        } else if (userRepository.existsByUsername(user.getUsername())) {
+            model.addAttribute("usernameExistsError", "This username was taken by another user.");
             return "register";
         }
 
-        if (userRepository.existsByUsername(user.getUsername())) {
-            bindingResult.rejectValue("username", "error.user", "User with this username already exists.");
-            return "register";
-        }
         userService.registerUser(user);
-
         return "redirect:/login";
     }
 }
