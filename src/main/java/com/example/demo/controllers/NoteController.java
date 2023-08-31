@@ -4,6 +4,9 @@ package com.example.demo.controllers;
 
 import com.example.demo.entity.Note;
 import com.example.demo.service.NoteService;
+import com.example.demo.service.UserDetailsImpl;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +21,22 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @GetMapping("/share/{id}")
-    public String viewSharedNote(@PathVariable Long id, Model model) {
+    @GetMapping("/note/share/{id}")
+    public String viewSharedNote(@PathVariable Long id, Model model, Authentication authentication) {
         Note note = noteService.getById(id);
-        if (note.isPublic()) {
+        Long currentUserId = ((UserDetailsImpl) authentication.getPrincipal()).getId();
+
+        if (note != null && (note.isValid() || currentUserId.equals(note.getUser()))) {
             model.addAttribute("note", note);
         } else {
             model.addAttribute("message", "Такої нотатки не існує.");
         }
+
         return "view_shared_note";
     }
 
     @GetMapping("/list")
-    public String listNotes(Model model) {      //повна версія
-        /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // Отримати ім'я аутентифікованого користувача
-
-        // Тепер ви можете використовувати username для отримання нотаток для конкретного користувача
-        List<Note> notes = noteService.getNotesByUsername(username);
-        model.addAttribute("notes", notes);
-*/
+    public String listNotes(Model model) {
         model.addAttribute("notes", noteService.listAll());
         return "list_notes";
     }
