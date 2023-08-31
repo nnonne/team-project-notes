@@ -49,7 +49,7 @@ public class AuthController {
             if (passwordEncoder.matches(password, userDetails.getPassword())) {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                return "redirect:./note/list";
+                return "redirect:/note/list";
             } else {
                 model.addAttribute("error", "Incorrect login or password.");
                 return "login";
