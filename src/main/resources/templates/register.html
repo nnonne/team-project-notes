@@ -25,7 +25,6 @@
                 placeholder="Введіть ім'я користувача"
                 name="username" />
     </div>
-
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <input
@@ -34,6 +33,14 @@
                 id="exampleInputPassword1"
                 placeholder="Введіть пароль"
                 name="password" />
+    </div>
+    <div th:if="${validationErrors}" class="alert alert-danger">
+        <ul>
+            <li th:each="error : ${validationErrors}" th:text="${error.defaultMessage}"></li>
+        </ul>
+    </div>
+    <div th:if="${usernameExistsError}" class="alert alert-danger">
+        <p th:text="${usernameExistsError}"></p>
     </div>
 
     <button type="submit" class="btn btn-secondary d-flex m-auto">Зареєструватись</button>

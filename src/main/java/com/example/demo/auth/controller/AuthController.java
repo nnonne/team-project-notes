@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,21 +42,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes) {
+    public String loginPost(@RequestParam String username, @RequestParam String password,Model model) {
         try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (passwordEncoder.matches(password, userDetails.getPassword())) {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                return "redirect:/note/list";
+                return "redirect:./note/list";
             } else {
-                redirectAttributes.addFlashAttribute("error", "Invalid username or password.");
-                return "redirect:/login";
+                model.addAttribute("error", "Incorrect login or password.");
+                return "login";
             }
         } catch (UsernameNotFoundException e) {
-            redirectAttributes.addFlashAttribute("error", "User not found.");
-            return "redirect:/login";
+            model.addAttribute("error", "User not found.");
+            return "login";
         }
     }
 
