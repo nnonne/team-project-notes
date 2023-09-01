@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.auth.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,16 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = "username")
+                @UniqueConstraint(columnNames = "username")
         })
 public class User {
 
@@ -31,6 +28,4 @@ public class User {
     @NotEmpty(message = "Password should not be empty.")
     @Size(min = 8, max = 100, message = "The length of the password must be from 8 to 100 characters inclusive.")
     private String password;
-    @OneToMany(mappedBy = "user")
-    private List<Note> notes = new ArrayList<>();
 }

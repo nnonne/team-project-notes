@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,20 +10,21 @@
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
             crossorigin="anonymous"
     />
-    <title>Реєстрація</title>
+    <title>Логін</title>
 </head>
 <body>
-<form style="display: block; margin: 100px auto; max-width: 400px" th:action="@{/register}" method="post">
-    <h1 class="text-center">Реєстрація</h1>
-
+<form style="display: block; margin: 100px auto; max-width: 400px" th:action="@{/login}" method="post">
+    <h1 class="text-center">Логін</h1>
     <div class="mb-3">
-        <label for="exampleInputUsername" class="form-label">Username</label>
+        <label for="exampleInputUsername1" class="form-label">Username</label>
         <input
                 type="text"
                 class="form-control border border-secondary-subtle"
-                id="exampleInputUsername"
-                placeholder="Введіть ім'я користувача"
-                name="username" />
+                id="exampleInputUsername1"
+                aria-describedby="usernameHelp"
+                placeholder="Username"
+                name="username"
+        />
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
@@ -31,19 +32,17 @@
                 type="password"
                 class="form-control border-secondary-subtle"
                 id="exampleInputPassword1"
-                placeholder="Введіть пароль"
-                name="password" />
+                placeholder="Password"
+                name="password"
+        />
     </div>
-    <div th:if="${validationErrors}" class="alert alert-danger">
-        <ul>
-            <li th:each="error : ${validationErrors}" th:text="${error.defaultMessage}"></li>
-        </ul>
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
     </div>
-    <div th:if="${usernameExistsError}" class="alert alert-danger">
-        <p th:text="${usernameExistsError}"></p>
-    </div>
-
-    <button type="submit" class="btn btn-secondary d-flex m-auto">Зареєструватись</button>
+    <button type="submit" class="btn btn-secondary text-secondary d-block m-auto mb-xl-2 " style="width: 200px; background-color: white">
+        Увійти
+    </button>
+    <a href="./register" class="btn btn-secondary d-block m-auto" style="width: 200px">Зареєструватись</a>
 </form>
 
 <script

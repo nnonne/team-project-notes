@@ -1,9 +1,8 @@
-package com.example.demo.controllers;
+package com.example.demo.auth.controller;
 
-
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserDetailsServiceImpl;
+import com.example.demo.auth.domain.User;
+import com.example.demo.auth.repository.UserRepository;
+import com.example.demo.auth.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

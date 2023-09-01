@@ -1,11 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.auth.service;
 
-
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.auth.domain.User;
+import com.example.demo.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
