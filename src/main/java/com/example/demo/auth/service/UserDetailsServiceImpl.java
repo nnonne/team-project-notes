@@ -1,6 +1,6 @@
 package com.example.demo.auth.service;
 
-import com.example.demo.auth.entity.User;
+import com.example.demo.auth.domain.User;
 import com.example.demo.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

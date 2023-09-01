@@ -1,7 +1,7 @@
 package com.example.demo.auth.service;
 
 
-import com.example.demo.auth.entity.User;
+import com.example.demo.auth.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
