@@ -1,4 +1,4 @@
-package com.example.demo.auth.entity;
+package com.example.demo.auth.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
