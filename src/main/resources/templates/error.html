@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Помилка</title>
+</head>
+<body>
+<h1>Помилка!</h1>
+<p th:text="${errorMessage}"></p>
+<a th:href="@{/note/list}" class="btn btn-primary"></a>
+<div style="display: flex;">
+    <input type="button"
+           value="Повернутись до списку нотаток"
+           class="btn btn-primary"
+           style="background-color: #4e82b4;color: white;"
+           onclick="window.location.href='/note/list';" />
+</div>
+</body>
+</html>
