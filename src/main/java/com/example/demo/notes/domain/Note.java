@@ -1,5 +1,6 @@
 package com.example.demo.notes.domain;
 
+import com.example.demo.auth.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -29,7 +30,9 @@ public class Note {
 
     @Enumerated(EnumType.STRING)
     private EAccessType accessType;
-
+    @ManyToOne // Багато нотаток можуть бути у одного користувача
+    @JoinColumn(name = "user_id") // Зв'язок через поле user_id
+    private User owner; // Поле для власника нотатки
     public Note(UUID id, String name, String content, EAccessType accessType) {
         this.id = id;
         this.name = name;
