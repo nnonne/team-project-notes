@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface NoteRepository extends JpaRepository<Note, Long> {
-    Optional<Object> findById(UUID id);
+public interface NoteRepository extends JpaRepository<Note, UUID> {
+    Optional<Note> findById(UUID id);
 
     void deleteById(UUID id);
 }
