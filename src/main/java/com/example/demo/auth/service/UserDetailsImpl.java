@@ -1,8 +1,9 @@
 package com.example.demo.auth.service;
 
 
-import com.example.demo.auth.entity.User;
+import com.example.demo.auth.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Collections;
 
+
+@Setter
 @Service
 public class UserDetailsImpl implements UserDetails {
 
@@ -21,19 +24,11 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserDetailsImpl(@Value("${user.id}") Long id,
-                           @Value("${user.username}") String username,
-                           @Value("${user.password}") String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
     public static UserDetailsImpl build(User user) {
-        UserDetailsImpl userDetailsBean = new UserDetailsImpl(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword());
+        UserDetailsImpl userDetailsBean = new UserDetailsImpl();
+        userDetailsBean.setId(user.getId());
+        userDetailsBean.setUsername(user.getUsername());
+        userDetailsBean.setPassword(user.getPassword());
         return userDetailsBean;
     }
 
