@@ -64,10 +64,9 @@ public class NoteController {
 
             model.addAttribute("notes", userNotes);
 
-            // Тут ви можете додати інші дані для моделі, якщо потрібно
         }
 
-        return "list_notes";
+        return "list";
     }
 
     @GetMapping("/create")
