@@ -1,8 +1,12 @@
 package com.example.demo.notes.service;
 
+import com.example.demo.auth.domain.User;
+import com.example.demo.auth.service.UserDetailsServiceImpl;
 import com.example.demo.notes.domain.Note;
 import com.example.demo.notes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.example.demo.notes.domain;
 
+import com.example.demo.auth.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,7 +15,7 @@ public class Note {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
@@ -27,19 +28,10 @@ public class Note {
     private String content;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "accessType")
     private EAccessType accessType;
 
-    public Note(UUID id, String name, String content, EAccessType accessType) {
-        this.id = id;
-        this.name = name;
-        this.content = content;
-        this.accessType = accessType;
-    }
-
-    public Note(UUID id) {
-        this.id = id;
-    }
-
-    public Note() {
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 }

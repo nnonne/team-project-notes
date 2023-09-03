@@ -1,11 +1,17 @@
 package com.example.demo.auth.domain;
 
+import com.example.demo.notes.domain.Note;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -18,8 +24,10 @@ import lombok.Setter;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
     @NotEmpty(message = "Username should not be empty.")
     @Size(min = 5, max = 50, message = "The length of the username must be from 5 to 50 characters inclusive.")
@@ -28,4 +36,20 @@ public class User {
     @NotEmpty(message = "Password should not be empty.")
     @Size(min = 8, max = 100, message = "The length of the password must be from 8 to 100 characters inclusive.")
     private String password;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Note> notes;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

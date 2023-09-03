@@ -1,5 +1,6 @@
 package com.example.demo.auth.controllers;
 
+import com.example.demo.auth.domain.User;
 import com.example.demo.auth.service.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,14 +41,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@RequestParam String username, @RequestParam String password,Model model) {
+    public String loginPost(@RequestParam String username, @RequestParam String password, Model model) {
         try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            User currentUser = userDetailsService.findByUsername(username);
 
-            if (passwordEncoder.matches(password, userDetails.getPassword())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+            if (passwordEncoder.matches(password, currentUser.getPassword())) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                return "redirect:/note/list";
+                return "redirect:/note/list/" + currentUser.getId();
             } else {
                 model.addAttribute("error", "Incorrect login or password.");
                 return "login";
