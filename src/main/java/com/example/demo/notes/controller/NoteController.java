@@ -38,9 +38,6 @@ public class NoteController {
             @PathVariable UUID userId,
             Model model
     ) {
-        if (currentUser == null || !currentUser.getId().equals(userId)) {
-            return "redirect:/login";
-        }
 
         List<Note> userNotes = noteRepository.findAllById(userId);
 
