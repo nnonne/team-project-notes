@@ -1,8 +1,8 @@
 package com.example.demo.auth.controllers;
 
-import com.example.demo.auth.domain.User;
 import com.example.demo.auth.service.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,15 +12,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Controller
 public class AuthController {
+    private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
+        this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -41,14 +47,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@RequestParam String username, @RequestParam String password, Model model) {
-        try {
-            User currentUser = userDetailsService.findByUsername(username);
+    public String authenticateUser(@RequestParam String username, @RequestParam String password, Model model) {
 
-            if (passwordEncoder.matches(password, currentUser.getPassword())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(currentUser, null);
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (passwordEncoder.matches(password, userDetails.getPassword())) {
+                Authentication authentication = authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(username, password));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                return "redirect:/note/list/" + currentUser.getId();
+
+                return "redirect:/note/list";
             } else {
                 model.addAttribute("error", "Incorrect login or password.");
                 return "login";
@@ -58,6 +67,7 @@ public class AuthController {
             return "login";
         }
     }
+
 
     private boolean checkAuthenticationStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

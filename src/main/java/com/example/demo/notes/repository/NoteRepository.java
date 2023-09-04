@@ -17,9 +17,5 @@ import java.util.UUID;
 public interface NoteRepository extends JpaRepository<Note, UUID> {
     Optional<Note> findById(UUID id);
     void deleteById(UUID id);
-    List<Note> findAllById(@Param("userId") UUID userId);
-
-    List<User> findByUsername(String username);
-    List<User> findByAuthor(User author);
-
+    List<Note> findByAuthor(User author);
 }

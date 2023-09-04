@@ -10,14 +10,14 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
+@Table(name = "notes")
 @Entity
-@Table(name ="notes")
 public class Note {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "uuid", unique = true, nullable = false)
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @NotEmpty(message = "Name should not be empty.")
@@ -29,10 +29,19 @@ public class Note {
     private String content;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "accessType")
     private EAccessType accessType;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User author;
+
+    public Note() {
+    }
+
+    public Note(UUID id) {
+        this.id = id;
+    }
 
     public Note(UUID id, String name, String content, EAccessType accessType, User author) {
         this.id = id;
@@ -40,12 +49,5 @@ public class Note {
         this.content = content;
         this.accessType = accessType;
         this.author = author;
-    }
-
-    public Note(UUID id) {
-        this.id = id;
-    }
-
-    public Note() {
     }
 }

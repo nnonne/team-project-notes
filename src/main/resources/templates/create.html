@@ -23,14 +23,15 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
             <div style="display: flex">
                 <label>
-                    <input type="radio" th:field="*{accessType}" name="accessType" value="PUBLIC" />
+                    <input type="radio" th:field="*{accessType}" name="accessType" th:value="PUBLIC" />
                     Публічний
                 </label>
                 <label style="margin-left: 20px">
-                    <input type="radio" th:field="*{accessType}" name="accessType" value="PRIVATE" />
+                    <input type="radio" th:field="*{accessType}" name="accessType" th:value="PRIVATE" />
                     Приватний
                 </label>
             </div>
+
             <div style="display: flex">
                 <button type="button" value="Зберегти" class="btn btn-secondary" style="background-color: white; color: black; margin-right: 10px"
                         onclick="window.location.href='/note/list';">

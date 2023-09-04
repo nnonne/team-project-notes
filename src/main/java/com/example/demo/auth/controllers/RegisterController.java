@@ -3,6 +3,7 @@ package com.example.demo.auth.controllers;
 import com.example.demo.auth.domain.User;
 import com.example.demo.auth.repository.UserRepository;
 import com.example.demo.auth.service.UserDetailsServiceImpl;
+import com.example.demo.exception.UserAlreadyExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
@@ -33,17 +36,20 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
+    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) throws UserAlreadyExistException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("validationErrors", bindingResult.getAllErrors());
-            return "register";
-        } else if (userRepository.existsByUsername(user.getUsername())) {
-            model.addAttribute("usernameExistsError", "This username was taken by another user.");
-            return "register";
+            return "/register";
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.registerUser(user);
+        if (userRepository.existsByUsername(user.getUsername())) {
+            model.addAttribute("usernameExistsError", "Username is already taken.");
+            return "/register";
+        }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        User newUser = new User(user.getUsername(), encodedPassword);
+        userService.registerUser(newUser);
+
         return "redirect:/login";
     }
 }

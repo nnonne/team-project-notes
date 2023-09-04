@@ -17,8 +17,6 @@ import java.util.UUID;
 @Setter
 @Service
 public class UserDetailsImpl implements UserDetails {
-
-    @Getter
     private UUID id;
 
     private String username;
@@ -53,6 +51,10 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+    public UUID getId() {
+        return id;
+    }
+
 
     @Override
     public boolean isAccountNonLocked() {
