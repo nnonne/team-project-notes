@@ -19,8 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+                .findByUsername(username);
         return UserDetailsImpl.build(user);
     }
 
@@ -29,7 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        return userRepository.findByUsername(username);
     }
 }

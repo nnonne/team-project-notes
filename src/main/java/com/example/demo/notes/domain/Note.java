@@ -1,22 +1,23 @@
 package com.example.demo.notes.domain;
 
 import com.example.demo.auth.domain.User;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
 @Entity
+@Table(name ="notes")
 public class Note {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(columnDefinition = "BINARY(16)")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "uuid", unique = true, nullable = false)
     private UUID id;
 
     @NotEmpty(message = "Name should not be empty.")
@@ -28,10 +29,23 @@ public class Note {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "accessType")
     private EAccessType accessType;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
     private User author;
+
+    public Note(UUID id, String name, String content, EAccessType accessType, User author) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+        this.accessType = accessType;
+        this.author = author;
+    }
+
+    public Note(UUID id) {
+        this.id = id;
+    }
+
+    public Note() {
+    }
 }

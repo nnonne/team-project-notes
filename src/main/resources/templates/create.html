@@ -13,65 +13,30 @@
 <body style="background-color: #f2f2f2">
 <div class="container">
     <h1 style="margin-top: 50px">Створення нотатки</h1>
-    <form
-            th:action="@{/note/create}"
-            th:object="${note}"
-            method="post"
-            style="margin-top: 20px"
-    >
+    <form th:action="@{/note/create}" th:object="${note}" method="post" style="margin-top: 20px">
         <label>Заголовок:</label>
         <input type="text" th:field="*{name}" id="name" />
         <div class="form-group" style="margin-top: 20px">
             <label>Зміст:</label>
-            <textarea
-                    th:field="*{content}"
-                    id="content"
-                    class="form-control"
-                    rows="20"
-            ></textarea>
+            <textarea th:field="*{content}" id="content" class="form-control" rows="20"></textarea>
         </div>
-        <div
-                style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-          "
-        >
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
             <div style="display: flex">
                 <label>
-                    <input
-                            type="radio"
-                            th:field="*{accessType}"
-                            name="accessType"
-                            value="PUBLIC"
-                    />
+                    <input type="radio" th:field="*{accessType}" name="accessType" value="PUBLIC" />
                     Публічний
                 </label>
                 <label style="margin-left: 20px">
-                    <input
-                            type="radio"
-                            th:field="*{accessType}"
-                            name="accessType"
-                            value="PRIVATE"
-                    />
+                    <input type="radio" th:field="*{accessType}" name="accessType" value="PRIVATE" />
                     Приватний
                 </label>
             </div>
             <div style="display: flex">
-                <button
-                        type="button"
-                        value="Зберегти"
-                        class="btn btn-secondary"
-                        style="background-color: white; color: black; margin-right: 10px"
-                        onclick="window.location.href='/note/list';"
-                >
+                <button type="button" value="Зберегти" class="btn btn-secondary" style="background-color: white; color: black; margin-right: 10px"
+                        onclick="window.location.href='/note/list';">
                     Скасувати
                 </button>
-
-                <button type="submit" value="Зберегти" class="btn btn-secondary">
-                    Зберегти
-                </button>
+                <button type="submit" value="Зберегти" class="btn btn-secondary">Зберегти</button>
             </div>
         </div>
     </form>
