@@ -1,0 +1,2 @@
+ALTER TABLE notes
+RENAME COLUMN name TO title;

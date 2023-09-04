@@ -1,6 +1,6 @@
 package com.example.demo.auth.controller;
 
-import com.example.demo.auth.entity.User;
+import com.example.demo.auth.domain.User;
 import com.example.demo.auth.repository.UserRepository;
 import com.example.demo.auth.service.UserDetailsServiceImpl;
 import org.springframework.security.core.Authentication;
@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.auth.entity.Note;
+import com.example.demo.notes.domain.Note;
 import com.example.demo.auth.service.NoteService;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,7 +35,7 @@ public class NoteController {
     }
     @GetMapping("/create")
     public String showCreateForm(Model model,  @RequestParam("user_id") long userId) {
-        User user = (User) model.getAttribute("user");
+        //User user = (User) model.getAttribute("user");
         //model.addAttribute("note", new Note(user.getId()));
         model.addAttribute("note", new Note(userId));
         return "note/create";

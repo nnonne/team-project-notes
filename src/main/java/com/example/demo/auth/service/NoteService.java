@@ -2,14 +2,13 @@ package com.example.demo.auth.service;
 
 import com.example.demo.auth.repository.NoteRepository;
 
-import com.example.demo.auth.entity.Note;
+import com.example.demo.notes.domain.Note;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @Data
@@ -39,7 +38,7 @@ public class NoteService {
 
     @Transactional
     public void update(Note note) {
-        noteRepository.updateNotesByIds(note.getId(), note.getTitle(), note.getContent(), note.getAccess(), note.getUserId());
+        noteRepository.updateNotesByIds(note.getId(), note.getTitle(), note.getContent(), note.getAccessType(), note.getUserId());
     }
 
 
