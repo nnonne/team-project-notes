@@ -53,7 +53,7 @@
         copyLinkButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const uuid = button.getAttribute('data-note-id');
-                const url = "localhost:8080/note/share/" + uuid;
+                const url = "localhost:9999/note/share/" + uuid;
                 const tempInput = document.createElement('input');
                 tempInput.setAttribute('value', url);
                 document.body.appendChild(tempInput);
