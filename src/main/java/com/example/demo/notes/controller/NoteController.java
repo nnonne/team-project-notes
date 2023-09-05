@@ -8,11 +8,9 @@ import com.example.demo.notes.service.NoteService;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -145,16 +143,16 @@ public class NoteController {
             if (note == null) {
                 return "redirect:/note/note_not_found";
             }
+
             if (note.getAuthor().getUsername().equals(currentUserUsername) || note.getAccessType() == EAccessType.PUBLIC) {
                 model.addAttribute("note", note);
                 model.addAttribute("noteId", id);
                 return "share";
             } else {
-                return "redirect:/note/nonexistent";
+                return "redirect:/note/note_not_found";
             }
         } else {
             return "redirect:/login";
         }
     }
-
 }

@@ -4,14 +4,12 @@ import com.example.demo.notes.domain.Note;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @NoArgsConstructor
 @Getter

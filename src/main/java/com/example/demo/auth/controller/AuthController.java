@@ -1,4 +1,4 @@
-package com.example.demo.auth.controllers;
+package com.example.demo.auth.controller;
 
 import com.example.demo.auth.service.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -12,12 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
 
 @Controller
 public class AuthController {
@@ -68,6 +64,14 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            SecurityContextHolder.clearContext();
+        }
+        return "redirect:/login";
+    }
 
     private boolean checkAuthenticationStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
