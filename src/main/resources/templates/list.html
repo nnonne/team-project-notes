@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List of notes</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+</head>
+<body>
+<div class="container">
+    <div class="mb-3" th:if="${#authorization.expression('isAuthenticated()')}" style="display: flex; width: 500px; justify-content: space-between; align-items: center; margin-top: 50px">
+        <h1 th:text="'Number of notes: ' + ${notes.size()}"></h1>
+        <a class="btn btn-success" th:href="@{/note/create}" style="width: 125px; margin-right: 10px;">Create</a>
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-danger" type="submit">Logout</button>
+        </form>
+    </div>
+
+    <table class="table" style="margin-top: 40px">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Content</th>
+            <th>Access</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="note : ${notes}">
+            <td th:text="${note.name}"></td>
+            <td th:text="${note.content}"></td>
+            <td th:text="${note.accessType}"></td>
+            <td>
+                <form th:action="@{/note/delete/{id}(id=${note.id})}" method="post" style="display: inline;">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+
+                <a th:href="@{/note/edit(id=${note.id})}">
+                    <button class="btn btn-warning" type="button">Edit</button>
+                </a>
+
+                <button class="btn btn-primary copy-link-button" th:attr="data-note-id=${note.id}">Copy Link</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyLinkButtons = document.querySelectorAll('.copy-link-button');
+
+        copyLinkButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const uuid = button.getAttribute('data-note-id');
+                const url = "localhost:8080/note/share/" + uuid;
+                const tempInput = document.createElement('input');
+                tempInput.setAttribute('value', url);
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Ссылка скопирована в буфер обмена: ' + url);
+            });
+        });
+    });
+</script>
+</body>
+</html>
