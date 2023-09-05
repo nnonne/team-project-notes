@@ -10,16 +10,13 @@
 <body>
 <div class="container">
     <div class="mb-3" th:if="${#authorization.expression('isAuthenticated()')}">
-        <!-- Кількість нотаток, видима тільки для авторизованих користувачів -->
         <h1 th:text="'Кількість нотаток: ' + ${notes.size()}"></h1>
     </div>
     <div th:unless="${#authorization.expression('isAuthenticated()')}">
-        <!-- Повідомлення для неавторизованих користувачів -->
         <p>Для перегляду нотаток необхідно увійти в систему.</p>
     </div>
 
     <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <!-- Кнопка створення нотатки, видима тільки для авторизованих користувачів -->
         <div
                 style="
           display: flex;
@@ -53,19 +50,15 @@
             <td th:text="${note.content}"></td>
             <td th:text="${note.accessType}"></td>
             <td>
-                <button type="submit" style="border: none">
-                    <!-- Додайте іконку для видалення -->
-                </button>
+                <form th:action="@{/note/delete/{id}(id=${note.id})}" method="post" style="display: inline;">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
 
-                <a th:href="@{/note/edit/{id}(id=${note.id})}">
-                    <!-- Додайте іконку для редагування -->
+                <a th:href="@{/note/edit(id=${note.id})}">
+                    <button class="btn btn-warning" type="button">Edit</button>
                 </a>
 
-                <form th:action="@{/note/delete/{id}(id=${note.id})}" method="post">
-                    <button type="submit">
-                        <!-- Додайте іконку для видалення -->
-                    </button>
-                </form>
+                <button class="btn btn-primary" type="button">Copy Link</button>
             </td>
         </tr>
         </tbody>

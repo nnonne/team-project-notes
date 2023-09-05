@@ -11,11 +11,9 @@
 <body>
 <div class="container">
     <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <!-- Ссылка для выхода, видимая только для авторизованных пользователей -->
-        <a href="/logout">Выйти</a>
+        <a href="/logout">Logout</a>
     </div>
     <div th:unless="${#authorization.expression('isAuthenticated()')}">
-        <!-- Форма регистрации, видимая только для неавторизованных пользователей -->
         <form style="display: block; margin: 100px auto; max-width: 400px" th:action="@{/register}" method="post">
             <h1 class="text-center">Реєстрація</h1>
 

@@ -6,12 +6,13 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Data
-@Table(name = "notes")
 @Entity
+@Table(name = "notes")
 public class Note {
 
     @Id
@@ -28,12 +29,13 @@ public class Note {
     @Size(min = 5, max = 10000, message = "The length of the content must be from 5 to 10000 characters inclusive.")
     private String content;
 
+    @NotNull(message = "Access type should not be empty.")
     @Enumerated(EnumType.STRING)
     @Column(name = "accessType")
     private EAccessType accessType;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author")
     private User author;
 
     public Note() {

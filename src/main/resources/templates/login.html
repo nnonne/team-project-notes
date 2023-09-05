@@ -10,11 +10,11 @@
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
             crossorigin="anonymous"
     />
-    <title>Логін</title>
+    <title>Authorisation</title>
 </head>
 <body>
 <form style="display: block; margin: 100px auto; max-width: 400px" th:action="@{/login}" method="post">
-    <h1 class="text-center">Логін</h1>
+    <h1 class="text-center">Authorisation</h1>
     <div class="mb-3">
         <label for="exampleInputUsername1" class="form-label">Username</label>
         <input
@@ -40,9 +40,9 @@
         <p th:text="${error}"></p>
     </div>
     <button type="submit" class="btn btn-secondary text-secondary d-block m-auto mb-xl-2 " style="width: 200px; background-color: white">
-        Увійти
+        Login
     </button>
-    <a href="./register" class="btn btn-secondary d-block m-auto" style="width: 200px">Зареєструватись</a>
+    <a href="./register" class="btn btn-secondary d-block m-auto" style="width: 200px">Register</a>
 </form>
 
 <script
