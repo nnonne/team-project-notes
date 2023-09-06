@@ -80,13 +80,22 @@ public class NoteController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") UUID id, Model model) {
-        Note existingNote = noteService.getNoteById(id);
-        if (existingNote == null) {
+    public String showEditForm(@RequestParam("id") UUID id, Note note, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserUsername = authentication.getName();
+
+        if (note.getAuthor().getUsername().equals(currentUserUsername)) {
+            Note existingNote = noteService.getNoteById(id);
+
+            if (existingNote == null) {
+                return "redirect:/note/list";
+            }
+
+            model.addAttribute("note", existingNote);
+            return "edit";
+        } else {
             return "redirect:/note/list";
         }
-        model.addAttribute("note", existingNote);
-        return "edit";
     }
 
 
