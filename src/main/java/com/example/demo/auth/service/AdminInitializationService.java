@@ -13,7 +13,7 @@ public class AdminInitializationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private boolean adminInitialized = false; // Флаг для відстеження ініціалізації
+    private boolean adminInitialized = false;
 
     public AdminInitializationService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -28,7 +28,7 @@ public class AdminInitializationService {
             adminUser.setUsername("admin");
             adminUser.setPassword(passwordEncoder.encode("super_secret_password"));
             userRepository.save(adminUser);
-            adminInitialized = true; // Позначаємо, що ініціалізація відбулася
+            adminInitialized = true;
         }
     }
 }
