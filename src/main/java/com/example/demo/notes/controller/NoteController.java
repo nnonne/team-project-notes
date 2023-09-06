@@ -32,42 +32,32 @@ public class NoteController {
     public String listNotes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
             String currentUsername = authentication.getName();
             User currentUser = userDetailsService.findUserByUsername(currentUsername);
             List<Note> userNotes = noteService.getAllNotes(currentUser);
 
             model.addAttribute("notes", userNotes);
             return "list";
-        } else {
-            return "redirect:/login";
-        }
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")){
-            model.addAttribute("note", new Note());
-            return "/create";
-        }
-        return "redirect:/login";
+        model.addAttribute("note", new Note());
+        return "/create";
     }
 
     @PostMapping("/create")
     public String createNote(@ModelAttribute("note") @Valid Note note, BindingResult bindingResult, @RequestParam(value = "accessType", defaultValue = "PRIVATE") EAccessType accessType, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")){
-            if (bindingResult.hasErrors()) {
+         if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .collect(Collectors.toList());
                 model.addAttribute("errorMessages", errorMessages);
                 return "error";
-            }
-            else {
+            } else {
                 String currentUsername = authentication.getName();
                 User currentUser = userDetailsService.findUserByUsername(currentUsername);
 
@@ -76,10 +66,6 @@ public class NoteController {
                 noteService.createOrUpdateNote(note);
                 return "redirect:/note/list";
             }
-
-        } else {
-            return "redirect:/login";
-        }
     }
 
     @PostMapping("/delete/{id}")
@@ -108,7 +94,6 @@ public class NoteController {
     public String editNote(@ModelAttribute("note") @Valid Note note, BindingResult bindingResult, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")){
             if (bindingResult.hasErrors()) {
                 List<String> errorMessages = bindingResult.getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -128,16 +113,11 @@ public class NoteController {
 
                 return "redirect:/note/list";
             }
-        } else {
-            return "redirect:/login";
-        }
     }
     @GetMapping("/share/{id}")
     public String viewSharedNote(@PathVariable("id") UUID id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
-            String currentUserUsername = authentication.getName();
+         String currentUserUsername = authentication.getName();
             Note note = noteService.getNoteById(id);
 
             if (note == null) {
@@ -151,8 +131,5 @@ public class NoteController {
             } else {
                 return "redirect:/note/note_not_found";
             }
-        } else {
-            return "redirect:/login";
         }
-    }
 }
